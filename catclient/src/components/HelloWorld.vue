@@ -1,57 +1,111 @@
 <template>
-  <v-app id="inspire">
+  <v-container fluid>
+   <div id="keep">
+    <v-navigation-drawer
+      v-model="drawer"
+      fixed
+      clipped
+      class="grey lighten-4"
+      app
+    >
+      <v-list
+        dense
+        class="grey lighten-4"
+      >
+        <template v-for="(item, i) in items">
+          <v-layout
+            v-if="item.heading"
+            :key="i"
+            row
+            align-center
+          >
+            <v-flex xs6>
+              <v-subheader v-if="item.heading">
+                {{ item.heading }}
+              </v-subheader>
+            </v-flex>
+            <v-flex xs6 class="text-xs-right">
+              <v-btn small flat>edit</v-btn>
+            </v-flex>
+          </v-layout>
+          <v-divider
+            v-else-if="item.divider"
+            :key="i"
+            dark
+            class="my-3"
+          ></v-divider>
+          <v-list-tile
+            v-else
+            :key="i"
+            @click=""
+          >
+            <v-list-tile-action>
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title class="grey--text">
+                {{ item.text }}
+              </v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </template>
+      </v-list>
+    </v-navigation-drawer>
+    <v-toolbar color="amber" app absolute clipped-left>
+      <v-toolbar-side-icon @click="drawer = !drawer"></v-toolbar-side-icon>
+      <span class="title ml-3 mr-5">Cat&nbsp;<span class="font-weight-light">chat</span></span>
+      <v-text-field
+        solo-inverted
+        flat
+        hide-details
+        label="Search"
+        prepend-inner-icon="search"
+      ></v-text-field>
+      <v-spacer></v-spacer>
+    </v-toolbar>
     <v-content>
-      <v-container fluid fill-height>
-        <v-layout align-center justify-center>
-          <v-flex xs12 sm8 md4>
-            <v-card class="elevation-12">
-              <v-toolbar dark color="primary">
-                <v-toolbar-title>Login form</v-toolbar-title>
-                <v-spacer></v-spacer>
-                <v-tooltip bottom>
-                  <v-btn
-                    slot="activator"
-                    :href="source"
-                    icon
-                    large
-                    target="_blank"
-                  >
-                    <v-icon large>code</v-icon>
-                  </v-btn>
-                  <span>Source</span>
-                </v-tooltip>
-                <v-tooltip right>
-                  <v-btn slot="activator" icon large href="https://codepen.io/johnjleider/pen/wyYVVj" target="_blank">
-                    <v-icon large>mdi-codepen</v-icon>
-                  </v-btn>
-                  <span>Codepen</span>
-                </v-tooltip>
-              </v-toolbar>
-              <v-card-text>
-                <v-form>
-                  <v-text-field prepend-icon="person" name="login" label="Login" type="text"></v-text-field>
-                  <v-text-field id="password" prepend-icon="lock" name="password" label="Password" type="password"></v-text-field>
-                </v-form>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="primary">Login</v-btn>
-              </v-card-actions>
-            </v-card>
+      <v-container fluid fill-height class="grey lighten-4">
+        <v-layout justify-center align-center>
+          <v-flex shrink>
+            
+           
           </v-flex>
         </v-layout>
       </v-container>
     </v-content>
-  </v-app>
+  </div>
+  </v-container>
 </template>
 
 <script>
   export default {
     data: () => ({
-      drawer: null
+      drawer: null,
+      items: [
+        { icon: 'mdi-forum-outline', text: 'Chat Room' },
+        { icon: 'mdi-gamepad-variant', text: 'Game Room' },
+        { divider: true },
+        { heading: 'Labels' },
+        { icon: 'add', text: 'Create new label' },
+        { divider: true },
+        { icon: 'archive', text: 'Archive' },
+        { icon: 'delete', text: 'Trash' },
+        { divider: true },
+        { icon: 'settings', text: 'Settings' },
+        { icon: 'chat_bubble', text: 'Trash' },
+        { icon: 'help', text: 'Help' },
+        { icon: 'phonelink', text: 'App downloads' },
+        { icon: 'keyboard', text: 'Keyboard shortcuts' }
+      ]
     }),
     props: {
       source: String
     }
   }
 </script>
+
+<style lang="sass">
+  #keep
+    .v-navigation-drawer__border
+      display: none
+</style>
