@@ -17,3 +17,10 @@
 const Route = use('Route')
 
 Route.on('/').render('welcome')
+
+Route.post('login','UserController.login').validator('Login')
+
+Route.resource('user','UserController')/*.validator(new Map([
+    [['store'], ['StoreUser']],
+    [['update'], ['UpdateUser']]
+  ]))*/
