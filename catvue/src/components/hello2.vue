@@ -1,13 +1,13 @@
 <template>
   <div>
-     <input type="text" v-model="name">
-    <h1>User 2 : {{name}}</h1>
+    <input type="text" v-model="name">
+    <h1 >User 1 : {{name}}</h1>
     <input type="number" v-model="inputmsg" @keypress.13="sendMessage(inputmsg)">
 
     <ul>
       <li v-for="(m,index) in allmsg" v-bind:key="index">{{m.username}} :  {{m.message}}</li>
     </ul>
-
+ <hr>
   </div>
 </template>
 
@@ -22,10 +22,10 @@ const ws = Ws('ws://localhost:3333')
 export default {
 
   data : () => ({
-    name: "User02",
+    name: "User01",
     ws : null ,
     chat : null,
-    inputmsg : 1,
+    inputmsg : 0,
     allmsg : [{username: "client" , message  : "Welcome"}]
   }),
 
