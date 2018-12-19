@@ -24,3 +24,6 @@ Route.resource('user','UserController')/*.validator(new Map([
     [['store'], ['StoreUser']],
     [['update'], ['UpdateUser']]
   ]))*/
+
+
+  Route.on('/chat').render('chat')

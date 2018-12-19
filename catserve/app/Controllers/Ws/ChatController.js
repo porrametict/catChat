@@ -12,7 +12,7 @@ class ChatController {
   	return  this.cat; 
   }
   onMessage (message) {
-    this.socket.broadcastToAll('message',this.collectSummation(message) )
+    this.socket.broadcastToAll('message',message)
 
   }
 }
