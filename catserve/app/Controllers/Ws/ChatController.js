@@ -12,9 +12,16 @@ class ChatController {
   	return  this.cat; 
   }
   onMessage (message) {
+    //console.log(message,this.socket.id)
     this.socket.broadcastToAll('message',message)
+    //this.socket.broadcastToAll('message',this.collectSummation(message))
 
+    //this.socket.emitTo('message',{username: 'TEST',message:'You Only'},[this.socket.id])
+    this.socket.emit('id',"dfgdfgd")
+    
   }
+
+
 }
 
 module.exports = ChatController

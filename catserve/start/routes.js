@@ -19,6 +19,7 @@ const Route = use('Route')
 Route.on('/').render('welcome')
 
 Route.post('login','UserController.login').validator('Login')
+Route.post('getUser','UserController.getuser')
 
 Route.resource('user','UserController')/*.validator(new Map([
     [['store'], ['StoreUser']],
@@ -27,3 +28,5 @@ Route.resource('user','UserController')/*.validator(new Map([
 
 
   Route.on('/chat').render('chat')
+  Route.on('/quiz').render('quiz')
+  Route.on('/login').render('login')

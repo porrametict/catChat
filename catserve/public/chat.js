@@ -27,11 +27,29 @@ function subscribeToChannel () {
     })
   
     chat.on('message', (message) => {
-      console.log('recive',message)
+      console.log(message)
       $('.messages').append(`
         <div class="message"><h3> ${message.username} </h3> <p> ${message.message} </p> </div>
       `)
     })
+    chat.on ('close',()=> {
+      ws.getSubscription('chat').emit('message', {
+        username: 'server',
+        message: window.username + " ออกจากห้องเเชท" 
+      })
+
+    })
+
+    chat.on ('ready',()=> {
+      ws.getSubscription('chat').emit('message', {
+        username: 'server',
+        message: window.username + "ได้เข้าห้องเเชท" 
+      })
+    })
+
+    chat.on ('id', (event) => {
+      console.log("Line 51 ",event)
+    }) 
   }
 
   $('#message').keyup(function (e) {

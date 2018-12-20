@@ -19,12 +19,21 @@ class UserController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async login ({request,response,auth})
+  async login ({request,response,auth,view})
   {
       const {username,password} = request.all()
-      let token = await auth.authenticator('user').attempt(username,password)
-      return token
-  } 
+      let token = await auth.authenticator('user').attempt(username,password);
+      //return token
+      console.log("in USERCONTRoLER",token);
+      //return view.render('home',{userToken : token})
+      return view.render('home',{userToken:token});
+  }
+  
+  async getuser({request, auth}) {
+   let user = await auth.authenticator('user').user;
+       return user
+  }
+
 
   async index ({ request, response, view }) {
 
