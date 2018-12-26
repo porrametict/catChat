@@ -2,9 +2,9 @@ export default {
     namespaced: true,
     state: {
         data: null,
-        user : null
+        user: null
     },
-    mutation: {
+    mutations: {
         setUser: async function (state, user) {
             state.user = user
         }
@@ -39,6 +39,7 @@ export default {
             if (token) {
                 user = await axios.get('/getUser')
                     .then((response) => {
+                        context.commit("setUser",response.data)
                         return response.data;
                     })
                     .catch((error) => {
@@ -47,7 +48,7 @@ export default {
                 localStorage.user = JSON.stringify(user)
                 return user;
             }
-            
+
             return null;
         },
         logout: async function (context) {

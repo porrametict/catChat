@@ -8,12 +8,14 @@ function store (name) {
 }
 
 import login from "./modules/login"
+import chat from "./modules/chat"
 
 Vue.use(Vuex);
 export default new Vuex.Store({
 
     modules  : {
-        login : login
+        login : login,
+        chat : chat 
     }
 
 })

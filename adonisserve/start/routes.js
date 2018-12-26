@@ -19,4 +19,5 @@ const Route = use('Route')
 Route.on('/').render('welcome')
 Route.post('login','UserLoginController.index')
 Route.get('getUser','UserLoginController.user')
+Route.resource('chatroom','ChatController')
 

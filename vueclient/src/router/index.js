@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
+import Chatroom from '@/components/Chatroom'
 import Home from '@/components/Home'
 import Login from '@/components/Login'
 import Game from '@/components/GameHome'
@@ -23,6 +23,10 @@ export default new Router({
       path: '/game',
       name: 'game',
       component: Game
+    }, {
+      path: "/chatroom",
+      name: "chatroom",
+      component: Chatroom
     }
   ]
 })
