@@ -37,9 +37,9 @@ export default {
   },
   methods: {
     start: async function() {
-        if(!this.user){
-            await this.$store.dispatch("login/getUser")
-        }
+      if (!this.user) {
+        await this.$store.dispatch("login/getUser");
+      }
       this.chatRooms = await this.$store.dispatch("chat/getChatRoom");
       console.log(this.chatRooms, "Home.vue Start");
     },
@@ -57,6 +57,7 @@ export default {
     },
     switchToGameRoom: async function() {
       alert("Let's Go");
+      this.$router.push({ name: "game" });
     }
   }
 };

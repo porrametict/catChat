@@ -1,7 +1,7 @@
 <template>
   <div v-if="user">
     <h1>{{chatroom}}</h1>
-    <input type="text" v-model="inputMessage" id @keypress.13="sendMessage(inputMessage)">
+    <input type="text" v-model="inputMessage"  @keypress.13="sendMessage(inputMessage)">
 
     <hr>
     <ul>
