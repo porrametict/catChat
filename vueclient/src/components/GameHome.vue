@@ -23,7 +23,7 @@ export default {
   }),
   computed: {
     ...mapState({
-      user: state => state.login.user
+      cduser: state => state.login.user
     })
   },
   async created() {

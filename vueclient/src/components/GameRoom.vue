@@ -1,23 +1,26 @@
 <template>
   <div v-if="user">
-    <h1>Hello Cortana {{user.username}}</h1>
-    <input type="text" name="" id="" v-model="inputMessage" @keypress.13="sendMessage(inputMessage)">
+    <h1>{{gameroom}}</h1>
+    <input type="text" v-model="inputMessage"  @keypress.13="sendMessage(inputMessage)">
+
     <hr>
     <ul>
-      <li v-for="(m,index) in messages" v-bind:key="index"> {{m.user.username}} : {{m.body}}</li>
+      <li v-for="(m,index) in messages" v-bind:key="index">{{m.user.username}} : {{m.body}}</li>
     </ul>
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 import Ws from "@adonisjs/websocket-client";
 const ws = Ws("ws://localhost:3333");
-import { mapState } from "vuex";
-import { watchFile } from 'fs';
 export default {
+  name: "app",
+  components: {},
   data: () => ({
-    gameroom : null,
-    inputMessage : "catcanfly",
-    messages : []
+    ws: null,
+    gameroom: null,
+    inputMessage: "Hello cat",
+    messages: []
   }),
   computed: {
     ...mapState({
@@ -28,33 +31,26 @@ export default {
     if (!this.user) {
       await this.$store.dispatch("login/getUser");
     }
-    this.gameroom = await this.$route.params.gamecode
-    this.connectServe()
+    this.gameroom = await this.$route.params.gamecode;
+    this.connectServe();
   },
   methods: {
-    async start() {
-      console.log("GameRoom.vue start");
-    },
-    async connectServe () {
+    connectServe: async function() {
       ws.connect();
-      this.game = ws.subscribe(`game:${this.gameroom}`)
-      this.game.on('ready',()=> {
-        this.sendMessage("cattle")
-
-      }),
-      this.game.on('message', (msg) => {
-        this.reciveMessage(msg)
-      })
-
+      this.game = ws.subscribe(`game:${this.gameroom}`);
+      this.game.on("ready", () => {
+        this.sendMessage("Hello World");
+      });
+      this.game.on("message", e => {
+        this.reciveMessage(e);
+      });
     },
-    async sendMessage (message) {
-      this.game.emit("message",{body:message,user:this.user})
-
-    } ,
-    async reciveMessage (message) {
-      this.messages.push(message)
+    sendMessage: async function(message) {
+      this.game.emit("message", {body:message,user:this.user});
+    },
+    reciveMessage: async function(message) {
+      this.messages.push(message);
     }
-
   }
 };
 </script>

@@ -20,7 +20,8 @@ export default {
     ws: null,
     chatroom: null,
     inputMessage: "Hello cat",
-    messages: []
+    messages: [],
+    token : null 
   }),
   computed: {
     ...mapState({
@@ -33,10 +34,14 @@ export default {
     }
     this.chatroom = await this.$route.params.chatname;
     this.connectServe();
+    let token = localStorage.getItem('access_token')
+    console.log("Chatroom start Token : ",token)
+    this.token = token
   },
   methods: {
     connectServe: async function() {
-      ws.connect();
+      ws.withApiToken(this.token)
+      .connect();
       this.chat = ws.subscribe(`chat:${this.chatroom}`);
       this.chat.on("ready", () => {
         this.sendMessage("Hello World");
