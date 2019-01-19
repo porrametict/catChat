@@ -44,6 +44,8 @@ export default {
       this.game.on("message", e => {
         this.reciveMessage(e);
       });
+
+    
     },
     sendMessage: async function(message) {
       this.game.emit("message", {body:message,user:this.user});

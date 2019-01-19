@@ -7,6 +7,8 @@
     <ul>
       <li v-for="(m,index) in messages" v-bind:key="index">{{m.user.username}} : {{m.body}}</li>
     </ul>
+    <hr>
+     <button @click="exitChat">ออกจากห้อง</button>
   </div>
 </template>
 <script>
@@ -49,12 +51,24 @@ export default {
       this.chat.on("message", e => {
         this.reciveMessage(e);
       });
+
+      this.chat.on("close" , () => {
+      alert("คุณได้ออกจากห้องเเล้ว")
+      this.$router.push({name:"home"})
+      })
+
+      this.chat.on('off' , () => {
+          
+      })
     },
     sendMessage: async function(message) {
       this.chat.emit("message", {body:message,user:this.user});
     },
     reciveMessage: async function(message) {
       this.messages.push(message);
+    },
+    exitChat : async function () {
+       this.chat.emit("close",{user:this.user})
     }
   }
 };
