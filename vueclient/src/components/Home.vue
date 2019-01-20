@@ -2,6 +2,9 @@
   <div v-if="user">
     <h1>Hello {{user.username}}</h1>
     <hr>
+    สร้างห้อง
+    <button @click="goCreateRoom">กดที่นี่เพื่อสร้างห้องใหม่</button>
+    <hr>
     <div>
       <h1>
         CHAT ROOM
@@ -58,7 +61,11 @@ export default {
     switchToGameRoom: async function() {
       alert("Let's Go");
       this.$router.push({ name: "game" });
+    },
+    goCreateRoom () {
+      this.$router.push({name:"createNewRoom"})
     }
+
   }
 };
 </script>

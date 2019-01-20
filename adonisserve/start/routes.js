@@ -20,4 +20,4 @@ Route.on('/').render('welcome')
 Route.post('login','UserLoginController.index')
 Route.get('getUser','UserLoginController.user')
 Route.resource('chatroom','ChatController')
-
+Route.resource('subject','SubjectController')
