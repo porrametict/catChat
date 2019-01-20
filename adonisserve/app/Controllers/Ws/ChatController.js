@@ -11,20 +11,39 @@ class ChatController {
     this.request = request  
   }
 
-  async onMessage(message){
-    //console.log("onMessage")
-    // let user = await auth.authercation('user').user ; 
-    // console.log("User",user)
-    //console.log(message,this.socket.id)
-    arr.push({"user": message.user,"socket": this.socket.id})
-    //console.log(arr)
+
+  async onPrompt (e) {
+    //console.log("omPromt",e)
+    arr.push({"user": e.user,"socket": this.socket.id})
+    this.countUser()
     
+
+  }
+
+  async onMessage(message){
     this.socket.broadcastToAll('message', message)
   }
 
-  async onClose(e){  
-    console.log("onClose",e)
+  async onExit(e){  
+   // console.log("onExit",e)
+    arr = this.deleteUser(arr,e.user.id)
+    this.countUser()
     this.socket.close()
+    
+  }
+
+
+  deleteUser (arr,value) {
+    return arr.filter(function(ele){
+      return ele.user.id != value;
+  });
+
+  }
+
+
+  countUser() {
+   // console.log("countUser",arr.length ,arr)
+    this.socket.broadcastToAll('updateRoom',arr.length)
   }
 }
 

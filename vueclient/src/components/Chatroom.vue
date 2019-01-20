@@ -1,6 +1,7 @@
 <template>
   <div v-if="user">
     <h1>{{chatroom}}</h1>
+    <h1> {{userInThisRoom}}  User(s)</h1>
     <input type="text" v-model="inputMessage"  @keypress.13="sendMessage(inputMessage)">
 
     <hr>
@@ -23,7 +24,8 @@ export default {
     chatroom: null,
     inputMessage: "Hello cat",
     messages: [],
-    token : null 
+    token : null ,
+    userInThisRoom : 0
   }),
   computed: {
     ...mapState({
@@ -46,6 +48,7 @@ export default {
       .connect();
       this.chat = ws.subscribe(`chat:${this.chatroom}`);
       this.chat.on("ready", () => {
+        this.chat.emit("prompt",{user : this.user})
         this.sendMessage("Hello World");
       });
       this.chat.on("message", e => {
@@ -57,8 +60,9 @@ export default {
       this.$router.push({name:"home"})
       })
 
-      this.chat.on('off' , () => {
-          
+      this.chat.on('updateRoom' , (e) => {
+          console.log("updateUser",e)
+          this.userInThisRoom = e
       })
     },
     sendMessage: async function(message) {
@@ -68,7 +72,7 @@ export default {
       this.messages.push(message);
     },
     exitChat : async function () {
-       this.chat.emit("close",{user:this.user})
+       this.chat.emit("exit",{user:this.user})
     }
   }
 };
