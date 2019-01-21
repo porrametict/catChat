@@ -1,4 +1,5 @@
 'use strict'
+const Room = use('App/Models/Room')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -41,6 +42,43 @@ class RoomController {
    * @param {Response} ctx.response
    */
   async store ({ request, response }) {
+    
+
+    function randomString() {
+      var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
+      var string_length = 8;
+      var randomstring = '';
+      for (var i=0; i<string_length; i++) {
+        var rnum = Math.floor(Math.random() * chars.length);
+        randomstring += chars.substring(rnum,rnum+1);
+      }
+      return randomstring ;
+    }
+    
+     let roomNumber = randomString()
+     let form = request.all();
+     let subject = form.subject_id
+    // let preRoom = Room.query().where('subject_id',subject).orderBy("created_at",'desc')
+    // let lastRoom = ! preRoom.length ? null : preRoom[0].room_code
+    // if( !lastRoom) { // สร้างห้องครั้งเเรกในวิชานี้
+    //      roomNumber = 1 
+    // }else {
+    //   let rNum = lastRoom.substring(lastRoom.indexOf("R")+1,lastRoom.length)
+    //   roomNumber = parseInt(rNum)+1
+    // }
+    // console.log(lastRoom,"lastRoom2")
+    // //console.log("FORM",form)
+    // console.log(preRoom,"preRoom")
+    // //console.log('subject',subject)
+
+
+    form.room_code = `${subject}R${roomNumber}`
+    //console.log("FORM",form)
+    let room = new Room () 
+    room.fill(form)
+    await room.save() 
+    return room
+
   }
 
   /**
