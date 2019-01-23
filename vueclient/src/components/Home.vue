@@ -1,9 +1,16 @@
 <template>
   <div v-if="user">
     <h1>Hello {{user.username}}</h1>
-    <hr>
-    สร้างห้อง
+    <hr>สร้างห้อง
     <button @click="goCreateRoom">กดที่นี่เพื่อสร้างห้องใหม่</button>
+    <hr>
+    <h1>ROOM</h1>
+    <ul>
+      <li v-for="(r,index) in rooms" v-bind:key="index">
+        {{r.room_code}}
+        <button @click="enterRoom(r.room_code)">เข้าห้อง !!</button>
+      </li>
+    </ul>
     <hr>
     <div>
       <h1>
@@ -28,6 +35,7 @@ import { mapState, mapGetters } from "vuex";
 export default {
   data: () => ({
     chatRooms: [],
+    rooms: null,
     newRoomName: "ใส่ชือห้องเเชท"
   }),
   computed: {
@@ -37,6 +45,7 @@ export default {
   },
   async created() {
     this.start();
+    this.getRoom();
   },
   methods: {
     start: async function() {
@@ -45,6 +54,9 @@ export default {
       }
       this.chatRooms = await this.$store.dispatch("chat/getChatRoom");
       console.log(this.chatRooms, "Home.vue Start");
+    },
+    async getRoom() {
+      this.rooms = await this.$store.dispatch("room/getRoom");
     },
     newChatRoom: async function(newRoom) {
       let data = await this.$store.dispatch("chat/createChatroom", {
@@ -62,10 +74,16 @@ export default {
       alert("Let's Go");
       this.$router.push({ name: "game" });
     },
-    goCreateRoom () {
-      this.$router.push({name:"createNewRoom"})
+    goCreateRoom() {
+      this.$router.push({ name: "createNewRoom" });
+    },
+    enterRoom (room_code) {
+      alert(room_code)
+      this.$router.push({name:"room",params : {
+        room_code : room_code
+      }})
+      
     }
-
   }
 };
 </script>

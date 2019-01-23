@@ -19,6 +19,10 @@ class RoomController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
+
+    let room = Room.all()
+    return room 
+    
   }
 
   /**
