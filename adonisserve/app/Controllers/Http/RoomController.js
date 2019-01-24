@@ -20,8 +20,10 @@ class RoomController {
    */
   async index ({ request, response, view }) {
 
-    let room = Room.all()
-    return room 
+    let room=  await Room.all()
+    room=room.toJSON()
+    //console.log("sdfdhds",room)
+    return room
     
   }
 
@@ -95,6 +97,8 @@ class RoomController {
    * @param {View} ctx.view
    */
   async show ({ params, request, response, view }) {
+    
+
   }
 
   /**

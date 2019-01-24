@@ -17,3 +17,4 @@ const Ws = use('Ws')
 
 Ws.channel('chat:*', 'ChatController')
 Ws.channel('game:*','GameController')
+Ws.channel('room:*','RoomController')
