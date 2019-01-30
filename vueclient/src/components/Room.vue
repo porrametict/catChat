@@ -98,15 +98,13 @@ export default {
     }
     this.token = localStorage.getItem("access_token");
     this.connectServe();
-   /// want Fix
-    let someThing = window.addEventListener("beforeunload", function (event) {
-  // Cancel the event as stated by the standard.
-  event.preventDefault();
-  // Chrome requires returnValue to be set.
+    /// want Fix
 
-  event.returnValue = true;
-  // console.log(someThing,"segthkjl")
-});
+    // Chrome requires returnValue to be set.
+
+    //console.log(someThing,"segthkjl")
+
+    window.addEventListener("unload", this.exitRoom);
   },
   mounted() {
     // window.beforeunload = this.confirmExit()
@@ -114,12 +112,12 @@ export default {
   },
   async beforeDestroy() {
     //window.beforeunload = this.confirmExit();
-    //window.addEventListener('beforeunload',this.confirmExit())
-    this.confirmExit()
+    window.addEventListener('beforeunload',this.confirmExit())
+    this.confirmExit();
     //window.addEventListener('onbeforeunload',this.confirmExit())
   },
   destroyed() {
-    this.exitRoom()
+    this.exitRoom();
     //window.addEventListener('unload',this.confirmExit())
   },
   computed: {
@@ -191,8 +189,9 @@ export default {
     reciveMessage: async function(message) {
       this.messages.push(message);
     },
-    exitRoom: async function() {
-      console.log("exitRoom")
+    exitRoom: async function(e) {
+      e.preventDefault();
+      console.log("exitRoom");
       this.room.emit("exit", this.user);
     },
     async gameStart() {
@@ -221,15 +220,15 @@ export default {
       this.room.emit("tof", e);
     },
     confirmExit(e) {
-      console.log(this.windowState,"cat")
-      e.preventDefault()
-      
+      console.log(this.windowState, "cat");
+      e.preventDefault();
+
       if (this.windowState) {
         alert("You leave this room.");
         this.exitRoom();
       } else {
         this.windowState = true;
-        e.returnValue = "" ;
+        e.returnValue = "";
       }
     }
   }

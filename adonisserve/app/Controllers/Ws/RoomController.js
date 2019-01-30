@@ -25,7 +25,7 @@ class RoomController {
   }
 
   async onExit(e) {
-    console.log("Exit")
+    console.log(e.username,"Exit")
     players = this.deleteUser(players, e.id)
     this.socket.broadcastToAll("playerExit", players)
     this.socket.close()
@@ -84,7 +84,7 @@ class RoomController {
 
     let room_id = this.socket.topic
     room_id = room_id.substring(5)
-    console.log(room_id)
+    //console.log(room_id)
     // to be continues
 
     let form = { userId: e.user.id, hostId: host.user.id, score: null, roomId: room_id }
