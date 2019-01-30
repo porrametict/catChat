@@ -38,15 +38,15 @@
       <button @click="willAns()">จะตอบ</button>
 
       <div id="selectYou" v-if="ansbox">
-      <div v-if="isRespondent == true && isHost != true">
-        <h1>ยินดีด้วยคุณได้ตอบข้อนี้</h1>
-        <div id="answer">
-          <input type="text" v-model="answerQ" @keypress.13="sentAns()">
+        <div v-if="isRespondent == true && isHost != true">
+          <h1>ยินดีด้วยคุณได้ตอบข้อนี้</h1>
+          <div id="answer">
+            <input type="text" v-model="answerQ" @keypress.13="sentAns()">
+          </div>
         </div>
-      </div>
-      <div v-else-if="isRespondent != true  && isHost != true">
-        <h1>เสียใจด้วยคุณไม่ได้โอกาศตอบข้อนี้</h1>
-      </div>
+        <div v-else-if="isRespondent != true  && isHost != true">
+          <h1>เสียใจด้วยคุณไม่ได้โอกาศตอบข้อนี้</h1>
+        </div>
       </div>
     </div>
     <div v-if="respondents.length != 0 && isHost == true && room_state == 'active'">
@@ -59,9 +59,9 @@
       </ul>
 
       <div v-if="answerDisplay">
-         <h1>{{answerDisplay.user.username}} ตอบว่า {{answerDisplay.answer}}</h1>
-         <input type="button" value="ถูก" @click="tOrf({user:answerDisplay.user,tof:true})">
-         <input type="button" value="ผิด" @click="tOrf({user:answerDisplay.user,tof:false})">
+        <h1>{{answerDisplay.user.username}} ตอบว่า {{answerDisplay.answer}}</h1>
+        <input type="button" value="ถูก" @click="tOrf({user:answerDisplay.user,tof:true})">
+        <input type="button" value="ผิด" @click="tOrf({user:answerDisplay.user,tof:false})">
       </div>
     </div>
   </div>
@@ -86,9 +86,10 @@ export default {
     secDown: 15,
     respondents: [],
     isRespondent: false,
-    ansbox : false,
-    answerQ  : "",
-    answerDisplay : null 
+    ansbox: false,
+    answerQ: "",
+    answerDisplay: null,
+    windowState: false
   }),
   async created() {
     this.room_code = this.$route.params.room_code;
@@ -97,6 +98,29 @@ export default {
     }
     this.token = localStorage.getItem("access_token");
     this.connectServe();
+   /// want Fix
+    let someThing = window.addEventListener("beforeunload", function (event) {
+  // Cancel the event as stated by the standard.
+  event.preventDefault();
+  // Chrome requires returnValue to be set.
+
+  event.returnValue = true;
+  // console.log(someThing,"segthkjl")
+});
+  },
+  mounted() {
+    // window.beforeunload = this.confirmExit()
+    // window.unload = this.exitRoom()
+  },
+  async beforeDestroy() {
+    //window.beforeunload = this.confirmExit();
+    //window.addEventListener('beforeunload',this.confirmExit())
+    this.confirmExit()
+    //window.addEventListener('onbeforeunload',this.confirmExit())
+  },
+  destroyed() {
+    this.exitRoom()
+    //window.addEventListener('unload',this.confirmExit())
   },
   computed: {
     ...mapState({
@@ -152,15 +176,14 @@ export default {
         this.respondents.push(e);
       });
       this.room.on("selectYou", e => {
-        this.ansbox = true
-        this.isRespondent = true
+        this.ansbox = true;
+        this.isRespondent = true;
         console.log("selectYou", e);
       });
 
-      this.room.on("getAnswer",(e)=> {
-        this.answerDisplay = e
-
-      })
+      this.room.on("getAnswer", e => {
+        this.answerDisplay = e;
+      });
     },
     sendMessage: async function(message) {
       this.room.emit("message", { body: message, user: this.user });
@@ -169,6 +192,7 @@ export default {
       this.messages.push(message);
     },
     exitRoom: async function() {
+      console.log("exitRoom")
       this.room.emit("exit", this.user);
     },
     async gameStart() {
@@ -190,13 +214,24 @@ export default {
     selectRepondent(u) {
       this.room.emit("selectRepondent", u);
     },
-     sentAns() {
-       this.room.emit("sentAns",{user:this.user,answer : this.answerQ})
-     },
-     tOrf (e) {
-       this.room.emit("tof",e)
-
+    sentAns() {
+      this.room.emit("sentAns", { user: this.user, answer: this.answerQ });
+    },
+    tOrf(e) {
+      this.room.emit("tof", e);
+    },
+    confirmExit(e) {
+      console.log(this.windowState,"cat")
+      e.preventDefault()
+      
+      if (this.windowState) {
+        alert("You leave this room.");
+        this.exitRoom();
+      } else {
+        this.windowState = true;
+        e.returnValue = "" ;
       }
+    }
   }
 };
 </script>
@@ -229,7 +264,6 @@ nav ul {
   flex: 3;
   padding: 10px;
 }
-
 </style>
 
 
